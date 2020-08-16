@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventree/models/product_model.dart';
 import 'package:inventree/pages/add_product.dart';
-import 'package:inventree/pages/product_page.dart';
 import 'package:inventree/utils/constants.dart';
+import 'package:inventree/widgets/item_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,31 +77,8 @@ class _HomePageState extends State<HomePage> {
                       itemCount:
                           Provider.of<ProductModel>(context).products.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            Provider.of<ProductModel>(context)
-                                .products[index]
-                                .name,
-                            style: TextStyle(
-                              color: kAppBackgroudColour,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 25,
-                            ),
-                          ),
-                          subtitle: Text(
-                            'Date Bought: ${Provider.of<ProductModel>(context).products[index].dateBought}',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductPage(
-                                  index: index,
-                                ),
-                              ),
-                            );
-                          },
+                        return ItemListTile(
+                          index: index,
                         );
                       }),
                 ),

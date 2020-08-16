@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:inventree/models/product_model.dart';
 import 'package:inventree/utils/constants.dart';
+
 import 'package:inventree/widgets/add_product_text_field.dart';
 import 'package:inventree/widgets/material_custom_button.dart';
 import 'package:inventree/widgets/popup_dialog.dart';
 import 'package:provider/provider.dart';
 
-class ProductPage extends StatefulWidget {
+class ProductPage extends StatelessWidget {
   final int index;
 
   ProductPage({@required this.index});
 
-  @override
-  _ProductPageState createState() => _ProductPageState();
-}
-
-class _ProductPageState extends State<ProductPage> {
-  String buyer, dateSold;
-
-  int getIndex() {
-    return widget.index;
-  }
+  static String buyer, dateSold;
+  static int quantity = 0;
+  static double amountPaid = 0;
 
   void resetValues() {
     buyer = '';
     dateSold = '';
   }
 
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -44,131 +37,145 @@ class _ProductPageState extends State<ProductPage> {
               topRight: Radius.circular(10),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                '${Provider.of<ProductModel>(context).products[getIndex()].name}',
-                style: TextStyle(
-                  color: kAppBackgroudColour,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              Text(
-                  '${Provider.of<ProductModel>(context).products[getIndex()].dateBought}'),
-              Divider(),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Price(NGN): ${Provider.of<ProductModel>(context).products[getIndex()].price} ',
-                style: TextStyle(
-                  color: kAppBackgroudColour,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Cost(NGN): ${Provider.of<ProductModel>(context).products[getIndex()].cost}',
-                style: kProductDetailsTextStyle,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'No in Stock: ${Provider.of<ProductModel>(context).products[getIndex()].stock}',
-                style: kProductDetailsTextStyle,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Profit(NGN): ${Provider.of<ProductModel>(context).products[getIndex()].getprofit()}',
-                style: kProductDetailsTextStyle,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: Provider.of<ProductModel>(context)
-                          .products[getIndex()]
-                          .buyer
-                          .isEmpty
-                      ? 0
-                      : Provider.of<ProductModel>(context)
-                          .products[getIndex()]
-                          .buyer
-                          .length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Buyer: ${Provider.of<ProductModel>(context).products[getIndex()].buyer?.elementAt(index)} ',
-                          style: kProductDetailsTextStyle,
-                        ),
-                        Text(
-                          'Date Bought: ${Provider.of<ProductModel>(context).products[getIndex()].dateSold?.elementAt(index)}',
-                          style: kProductDetailsTextStyle,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              MaterialCustomButton(
-                label: 'Add Buyer',
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return PopupDialog(
-                        children: [
-                          AddProductTextField(
-                            hintText: 'Buyer\'s name',
-                            onChanged: (value) {
-                              buyer = value;
+          child: Consumer<ProductModel>(
+            builder: (context, product, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '${product.products[index].name}',
+                    style: TextStyle(
+                      color: kAppBackgroudColour,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 30,
+                    ),
+                  ),
+                  Text('${product.products[index].dateBought}'),
+                  Divider(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Selling Price(NGN): ${product.products[index].price} ',
+                    style: TextStyle(
+                      color: kAppBackgroudColour,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    'Cost Price(NGN): ${product.products[index].cost}',
+                    style: kProductDetailsTextStyle,
+                  ),
+                  Text(
+                    'No in Stock: ${product.products[index].stock}',
+                    style: kProductDetailsTextStyle,
+                  ),
+                  Text(
+                    'Profit(NGN): ${product.products[index].getprofit()}\nTotal Profit(NGN):${product.products[index].getTotalprofit()}',
+                    style: kProductDetailsTextStyle,
+                  ),
+                  Divider(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: product.products[index].buyer.isEmpty
+                          ? 0
+                          : product.products[index].buyer.length,
+                      itemBuilder: (BuildContext context, int item) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Buyer: ${product.products[index].buyer?.elementAt(item)} ',
+                              style: kProductDetailsTextStyle,
+                            ),
+                            Text(
+                              'Date Bought: ${product.products[index].dateSold?.elementAt(item)}',
+                              style: kProductDetailsTextStyle,
+                            ),
+                            Text(
+                              'Amount Paid: ${product.products[index].amountSold?.elementAt(item)}',
+                              style: kProductDetailsTextStyle,
+                            ),
+                            Text(
+                              'Profit Made For Sale: ${product.products[index].profitMade?.elementAt(item)}',
+                              style: kProductDetailsTextStyle,
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  MaterialCustomButton(
+                    label: 'Add Buyer',
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PopupDialog(
+                            children: [
+                              AddProductTextField(
+                                hintText: 'Buyer\'s name',
+                                onChanged: (value) {
+                                  buyer = value;
+                                },
+                              ),
+                              AddProductTextField(
+                                hintText: 'Date sold',
+                                keyboardType: TextInputType.datetime,
+                                onChanged: (value) {
+                                  dateSold = value;
+                                },
+                              ),
+                              Row(
+                                children: [
+                                  AddProductTextField(
+                                      width: 150,
+                                      hintText: 'Quantity sold',
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        quantity = int.parse(value);
+                                      }),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  AddProductTextField(
+                                      width: 150,
+                                      hintText: 'Amount paid',
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        amountPaid = double.parse(value);
+                                      }),
+                                ],
+                              ),
+                            ],
+                            onPressed: () {
+                              if (product.products[index].stock > 0 &&
+                                  buyer != '' &&
+                                  dateSold != '') {
+                                product.addBuyer(
+                                    index, buyer, dateSold, amountPaid);
+                                product.updateStock(index, quantity);
+                                product.setProfitMade(
+                                    index, quantity, amountPaid);
+                              }
+                              resetValues();
+                              Navigator.pop(context);
                             },
-                          ),
-                          AddProductTextField(
-                            hintText: 'Date bought',
-                            keyboardType: TextInputType.datetime,
-                            onChanged: (value) {
-                              dateSold = value;
-                            },
-                          ),
-                        ],
-                        onPressed: () {
-                          if (Provider.of<ProductModel>(context, listen: false)
-                                      .products[getIndex()]
-                                      .stock >
-                                  0 &&
-                              buyer != '' &&
-                              dateSold != '') {
-                            Provider.of<ProductModel>(context, listen: false)
-                                .addBuyer(getIndex(), buyer, dateSold);
-
-                            Provider.of<ProductModel>(context, listen: false)
-                                .products[getIndex()]
-                                .stock--;
-                          }
-                          resetValues();
-                          Navigator.pop(context);
+                          );
                         },
                       );
                     },
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

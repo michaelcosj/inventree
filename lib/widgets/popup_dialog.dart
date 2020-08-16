@@ -11,6 +11,7 @@ class PopupDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: EdgeInsets.all(16),
       title: Text('ADD BUYER'),
       titleTextStyle: kProductDetailsTextStyle,
       content: SingleChildScrollView(

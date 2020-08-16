@@ -89,6 +89,8 @@ class AddProduct extends StatelessWidget {
                         dateBought: dateBought,
                         buyer: [],
                         dateSold: [],
+                        amountSold: [],
+                        profitMade: [],
                       ),
                     );
                   }

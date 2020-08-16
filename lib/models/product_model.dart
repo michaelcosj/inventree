@@ -16,17 +16,33 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addBuyer(int index, String buyer, String dateSold) {
-    _products[index].buyer.add(buyer);
-    _products[index].dateSold.add(dateSold);
+  void removeProduct(Product product) {
+    _products.remove(product);
     saveData();
     notifyListeners();
   }
 
-//I'll make use of this function in a future version, my client said that it isn't needed.
-  void removeProduct(Product product) {
-    _products.remove(product);
+  void addBuyer(int index, String buyer, String dateSold, double amountSold) {
+    _products[index].buyer.add(buyer);
+    _products[index].dateSold.add(dateSold);
+    _products[index].amountSold.add(amountSold);
+    saveData();
+    notifyListeners();
+  }
 
+  void updateStock(int index, int quantity) {
+    if (_products[index].stock >= quantity) {
+      _products[index].stock = _products[index].stock - quantity;
+    }
+    saveData();
+    notifyListeners();
+  }
+
+  void setProfitMade(int index, int quantity, double amountSold) {
+    double profit = (amountSold * quantity) - _products[index].cost;
+    _products[index].profitMade.add(profit);
+
+    saveData();
     notifyListeners();
   }
 
