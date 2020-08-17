@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventree/models/product_model.dart';
+import 'package:inventree/pages/edit_product.dart';
 import 'package:inventree/utils/constants.dart';
 
 import 'package:inventree/widgets/add_product_text_field.dart';
@@ -26,6 +27,20 @@ class ProductPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kAppBackgroudColour,
+          actions: [
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditProduct(
+                                index: index,
+                                product: Provider.of<ProductModel>(context)
+                                    .products[index],
+                              )));
+                })
+          ],
         ),
         backgroundColor: kAppBackgroudColour,
         body: Container(

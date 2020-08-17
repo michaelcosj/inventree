@@ -22,6 +22,12 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void editProduct(Product product, int index) {
+    _products[index] = product;
+    saveData();
+    notifyListeners();
+  }
+
   void addBuyer(int index, String buyer, String dateSold, double amountSold) {
     _products[index].buyer.add(buyer);
     _products[index].dateSold.add(dateSold);
