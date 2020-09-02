@@ -6,6 +6,7 @@ import 'package:inventree/utils/constants.dart';
 import 'package:inventree/widgets/add_product_text_field.dart';
 import 'package:inventree/widgets/material_custom_button.dart';
 import 'package:inventree/widgets/popup_dialog.dart';
+import 'package:inventree/widgets/switch_page.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
@@ -31,14 +32,13 @@ class ProductPage extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditProduct(
-                                index: index,
-                                product: Provider.of<ProductModel>(context)
-                                    .products[index],
-                              )));
+                  Navigator.of(context).push(switchPage(
+                    EditProduct(
+                      index: index,
+                      product: Provider.of<ProductModel>(context, listen: false)
+                          .products[index],
+                    ),
+                  ));
                 })
           ],
         ),

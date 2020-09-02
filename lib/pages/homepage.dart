@@ -3,6 +3,7 @@ import 'package:inventree/models/product_model.dart';
 import 'package:inventree/pages/add_product.dart';
 import 'package:inventree/utils/constants.dart';
 import 'package:inventree/widgets/item_list_tile.dart';
+import 'package:inventree/widgets/switch_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,12 +24,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddProduct(),
-              ),
-            );
+            Navigator.of(context).push(switchPage(AddProduct()));
           },
           child: Icon(
             Icons.add,

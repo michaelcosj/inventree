@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventree/models/product_model.dart';
 import 'package:inventree/pages/product_page.dart';
 import 'package:inventree/utils/constants.dart';
+import 'package:inventree/widgets/switch_page.dart';
 import 'package:provider/provider.dart';
 
 class ItemListTile extends StatelessWidget {
@@ -35,10 +36,9 @@ class ItemListTile extends StatelessWidget {
               product.removeProduct(product.products[index]);
             }),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProductPage(
+          Navigator.of(context).push(
+            switchPage(
+              ProductPage(
                 index: index,
               ),
             ),

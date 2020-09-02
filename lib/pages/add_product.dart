@@ -7,7 +7,8 @@ import 'package:inventree/widgets/add_product_text_field.dart';
 import 'package:provider/provider.dart';
 
 class AddProduct extends StatelessWidget {
-  static String productName, dateBought;
+  static String productName = '';
+  static String dateBought = '';
   static double costPrice, sellingPrice;
   static int nInStock;
 
@@ -78,7 +79,7 @@ class AddProduct extends StatelessWidget {
               MaterialCustomButton(
                 label: 'Add Product',
                 onPressed: () {
-                  if (productName != '') {
+                  if (productName.length >= 3 && productName[1] != ' ') {
                     Provider.of<ProductModel>(context, listen: false)
                         .addProduct(
                       Product(
@@ -93,9 +94,9 @@ class AddProduct extends StatelessWidget {
                         profitMade: [],
                       ),
                     );
+                    reset();
                   }
                   Navigator.pop(context);
-                  reset();
                 },
               ),
             ],
